@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin | Authentik Design</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="admin">
+  <h1>Gérer mes projets</h1>
+
+  <section class="box" id="login">
+    <form class="form" id="login-form">
+      <label for="email">E-mail</label><input id="email" type="email" required autocomplete="username">
+      <label for="pass">Mot de passe</label><input id="pass" type="password" required autocomplete="current-password">
+      <button class="btn" type="submit">Se connecter</button>
+      <p class="status" id="login-status" role="status"></p>
+    </form>
+  </section>
+
+  <div id="panel" hidden>
+    <section class="box" id="form-box">
+      <h2 id="form-title" style="font-size:1.4rem;margin-bottom:.5rem">Ajouter un projet</h2>
+      <form class="form" id="add-form">
+        <label for="nom">Nom du projet</label><input id="nom" required>
+        <label for="cat">Catégorie</label><select id="cat"></select>
+        <label for="desc">Description (facultatif)</label><textarea id="desc" rows="3"></textarea>
+        <div id="existing-box" hidden>
+          <label>Fichiers actuels (coche « Retirer » pour en supprimer)</label>
+          <ul class="list" id="existing"></ul>
+        </div>
+        <label for="files" id="files-label">Affiches, logos ou PDF (plusieurs possibles)</label>
+        <input id="files" type="file" accept="image/*,application/pdf" multiple required>
+        <button class="btn" type="submit" id="add-btn">Publier sur le portfolio</button>
+        <button class="btn btn--ghost" type="button" id="cancel" hidden>Annuler la modification</button>
+        <p class="status" id="add-status" role="status"></p>
+      </form>
+    </section>
+    <section>
+      <h2 style="font-size:1.4rem">Projets publiés</h2>
+      <ul class="list" id="list"></ul>
+      <p style="margin-top:1.5rem"><a href="index.html">Voir le portfolio</a> · <button class="btn btn--ghost btn--small" id="logout">Se déconnecter</button></p>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const CATEGORIES = ['Branding', 'Social Media Design', 'Publicité & Communication', 'Logofolio', 'Projets conceptuels'];
+const BUCKET = 'projets', MAX_SIDE = 2000;
+const $ = s => document.querySelector(s);
+const say = (id, msg, err) => { const n = $(id); n.textContent = msg; n.classList.toggle('err', !!err); };
+CATEGORIES.forEach(c => $('#cat').add(new Option(c, c)));
+let editing = null;
+
+if (!window.SUPABASE_URL || window.SUPABASE_URL.includes('VOTRE')) {
+  say('#login-status', 'Complétez d’abord config.js avec vos identifiants Supabase.', true);
+  $('#login-form').querySelector('button').disabled = true;
+}
+const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+
+async function show() {
+  const { data: { session } } = await sb.auth.getSession();
+  $('#login').hidden = !!session; $('#panel').hidden = !session;
+  if (session) refresh();
+}
+$('#login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const { error } = await sb.auth.signInWithPassword({ email: $('#email').value, password: $('#pass').value });
+  if (error) say('#login-status', 'Connexion refusée : vérifiez l’e-mail et le mot de passe.', true); else show();
+});
+$('#logout').addEventListener('click', async () => { await sb.auth.signOut(); show(); });
+
+/* Réduit les grandes images avant l'envoi (envoi bien plus rapide, qualité conservée) */
+async function shrink(f) {
+  if (!f.type.startsWith('image/') || /svg|gif/.test(f.type)) return f;
+  try {
+    const bmp = await createImageBitmap(f);
+    const r = Math.min(1, MAX_SIDE / Math.max(bmp.width, bmp.height));
+    if (r === 1 && f.size < 600000) { bmp.close(); return f; }
+    const c = document.createElement('canvas');
+    c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); bmp.close();
+    const type = f.type === 'image/png' ? 'image/png' : 'image/jpeg';
+    const blob = await new Promise(res => c.toBlob(res, type, .88));
+    return blob && blob.size < f.size ? new File([blob], f.name, { type }) : f;
+  } catch { return f; }
+}
+
+function resetForm() {
+  editing = null; $('#add-form').reset();
+  $('#form-title').textContent = 'Ajouter un projet'; $('#add-btn').textContent = 'Publier sur le portfolio';
+  $('#files').required = true; $('#existing-box').hidden = true; $('#cancel').hidden = true;
+  $('#files-label').textContent = 'Affiches, logos ou PDF (plusieurs possibles)'; say('#add-status', '');
+}
+$('#cancel').addEventListener('click', resetForm);
+
+function startEdit(p) {
+  editing = p;
+  $('#nom').value = p.nom; $('#cat').value = p.categorie; $('#desc').value = p.description || '';
+  $('#form-title').textContent = 'Modifier le projet'; $('#add-btn').textContent = 'Enregistrer les modifications';
+  $('#files').required = false; $('#cancel').hidden = false; $('#existing-box').hidden = false;
+  $('#files-label').textContent = 'Ajouter d’autres fichiers (facultatif)';
+  const ul = $('#existing'); ul.innerHTML = '';
+  (p.fichiers || []).forEach((f, i) => {
+    const li = document.createElement('li');
+    const t = document.createElement('span'); t.textContent = f.name || ('Fichier ' + (i + 1));
+    const l = document.createElement('label'); const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.dataset.i = i; l.append(cb, ' Retirer'); li.append(t, l); ul.appendChild(li);
+  });
+  $('#form-box').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function refresh() {
+  const { data } = await sb.from('projets').select('*').order('created_at', { ascending: false });
+  const ul = $('#list'); ul.innerHTML = '';
+  (data || []).forEach(p => {
+    const li = document.createElement('li');
+    const t = document.createElement('span'); t.textContent = `${p.nom} (${p.categorie}, ${(p.fichiers || []).length} fichier(s))`;
+    const box = document.createElement('span');
+    const e = document.createElement('button'); e.className = 'btn btn--ghost btn--small'; e.textContent = 'Modifier'; e.type = 'button';
+    e.addEventListener('click', () => startEdit(p));
+    const b = document.createElement('button'); b.className = 'btn btn--danger'; b.textContent = 'Supprimer'; b.type = 'button';
+    b.addEventListener('click', async () => {
+      if (!confirm(`Supprimer « ${p.nom} » ?`)) return;
+      const paths = (p.fichiers || []).map(f => f.path).filter(Boolean);
+      if (paths.length) await sb.storage.from(BUCKET).remove(paths);
+      await sb.from('projets').delete().eq('id', p.id);
+      if (editing && editing.id === p.id) resetForm(); refresh();
+    });
+    box.style.cssText = 'display:flex;gap:.5rem;flex:none'; box.append(e, b); li.append(t, box); ul.appendChild(li);
+  });
+  if (!data || !data.length) ul.innerHTML = '<li>Aucun projet pour l’instant.</li>';
+}
+
+$('#add-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#add-btn'); btn.disabled = true;
+  try {
+    const files = [...$('#files').files];
+    const removed = editing ? [...document.querySelectorAll('#existing input:checked')].map(c => +c.dataset.i) : [];
+    const kept = editing ? (editing.fichiers || []).filter((_, i) => !removed.includes(i)) : [];
+    if (!kept.length && !files.length) throw new Error('ajoutez au moins un fichier');
+    const folder = crypto.randomUUID(); let done = 0;
+    say('#add-status', `Envoi des fichiers (0/${files.length})…`);
+    const added = await Promise.all(files.map(async (orig, k) => {
+      const f = await shrink(orig);
+      const path = `${folder}/${k}_${f.name.normalize('NFD').replace(/[^\w.\-]+/g, '_')}`;
+      const { error } = await sb.storage.from(BUCKET).upload(path, f, { contentType: f.type });
+      if (error) throw error;
+      say('#add-status', `Envoi des fichiers (${++done}/${files.length})…`);
+      return { url: sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl, type: f.type.startsWith('image/') ? 'image' : 'pdf', name: orig.name, path };
+    }));
+    const row = { nom: $('#nom').value.trim(), categorie: $('#cat').value, description: $('#desc').value.trim(), fichiers: [...kept, ...added] };
+    const { error } = editing ? await sb.from('projets').update(row).eq('id', editing.id) : await sb.from('projets').insert(row);
+    if (error) throw error;
+    if (editing) { const gone = (editing.fichiers || []).filter((_, i) => removed.includes(i)).map(f => f.path).filter(Boolean); if (gone.length) await sb.storage.from(BUCKET).remove(gone); }
+    const msg = editing ? 'Modifications enregistrées.' : 'Projet publié : il est déjà visible sur le portfolio.';
+    resetForm(); say('#add-status', msg); refresh();
+  } catch (err) { say('#add-status', 'Échec : ' + (err.message || 'erreur inconnue'), true); }
+  btn.disabled = false;
+});
+show();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abraham Tottin | Brand designer – Authentik Design</title>
+  <meta name="description" content="Brand designer au Bénin. J’aide les entrepreneurs, coachs et créateurs de contenu à avoir une image de marque crédible et rentable sur les réseaux sociaux.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<header class="header" id="header">
+  <nav class="nav container" aria-label="Navigation principale">
+    <a href="#accueil" class="logo">Abraham TOTTIN</a>
+    <button class="nav__toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">Menu</button>
+    <ul class="nav__list" id="nav-list">
+      <li><a href="#accueil" class="nav__link">Accueil</a></li>
+      <li><a href="#projets" class="nav__link">Projets</a></li>
+      <li><a href="#services" class="nav__link">Services</a></li>
+      <li><a href="#competences" class="nav__link">Compétences</a></li>
+      <li><a class="btn btn--small" href="#contact">Me contacter</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- 01 ACCUEIL -->
+  <section class="hero" id="accueil">
+    <div class="container hero__inner reveal">
+      <p class="hero__sub">Bonjour, je m'appelle Abraham TOTTIN</p>
+      <h1 class="hero__title">Brand designer &amp;<br><span id="typed" class="typed"></span></h1>
+      <p class="hero__text">Je crée des visuels minimalistes qui rendent votre marque crédible et rentable sur les réseaux sociaux.</p>
+      <a href="#projets" class="badge" aria-label="Voir les projets">
+        <span class="badge__text" id="badge-text" data-text="EXPLORER · PLUS · VOIR LES PROJETS · "></span>
+        <span class="badge__arrow">↓</span>
+      </a>
+      <!-- Votre photo : remplacez le bloc par <img class="hero__photo" src="images/abraham.png" alt="Abraham Tottin"> -->
+      <img class="hero__photo" src="images/abraham.png" alt="Abraham Tottin">
+    </div>
+  </section>
+
+  <!-- 02 À PROPOS -->
+  <section class="section about" id="apropos">
+    <div class="container about__grid">
+      <h2 class="about__title reveal">designer indépendant, je transforme des <span>idées floues</span> en <span>marques claires</span>, avec rigueur et audace.</h2>
+      <div class="reveal">
+        <p>Je vous aide à avoir une image de marque crédible et rentable sur les réseaux sociaux, avec des visuels professionnels et cohérents. Identité visuelle, affiches, stratégie de communication, badges, attestations, mise en page : je prends en charge tout ce qui donne à votre marque une allure pro.</p>
+        <a class="btn" href="#contact">Me contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PROJETS (chargés depuis la base de données) -->
+  <section class="section" id="projets">
+    <div class="container">
+      <h2 class="section__title reveal">Mes <span>projets</span></h2>
+      <div class="filters" id="filters" role="group" aria-label="Filtrer les projets"></div>
+      <div class="slider">
+        <button class="slider__btn" id="prev" aria-label="Projet précédent">‹</button>
+        <div class="track" id="track" tabindex="0" aria-live="polite"></div>
+        <button class="slider__btn" id="next" aria-label="Projet suivant">›</button>
+      </div>
+      <p class="empty" id="empty" hidden>Aucun projet dans cette catégorie pour le moment.</p>
+    </div>
+  </section>
+
+  <!-- 04 SERVICES -->
+  <section class="section section--soft" id="services">
+    <div class="container">
+      <h2 class="section__title reveal">Mes <span>services</span></h2>
+      <div class="acc reveal" id="acc">
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Identité visuelle</span><i>+</i></button>
+          <div class="acc__body"><p>Logo, couleurs, typographies et règles d’usage, pour n’importe quel projet ou campagne.</p><ul><li>Logo</li><li>Charte graphique</li><li>Déclinaisons sur vos supports</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Affiches publicitaires</span><i>+</i></button>
+          <div class="acc__body"><p>Des affiches claires, qui attirent l’œil et donnent envie d’agir.</p><ul><li>Affiches</li><li>Flyers</li><li>Bannières de campagne</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Stratégie de communication</span><i>+</i></button>
+          <div class="acc__body"><p>Je définis quoi dire, à qui et sur quels supports, pour que chaque visuel serve un objectif.</p><ul><li>Message et cible</li><li>Choix des supports</li><li>Cohérence sur les réseaux sociaux</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Badges et attestations</span><i>+</i></button>
+          <div class="acc__body"><p>Des badges et des attestations soignés, prêts à être imprimés ou partagés.</p><ul><li>Badges</li><li>Attestations</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Documents éditoriaux et mise en page</span><i>+</i></button>
+          <div class="acc__body"><p>Brochures, dossiers et documents mis en page de façon professionnelle, lisibles et cohérents avec votre marque.</p><ul><li>Mise en page professionnelle</li><li>Documents éditoriaux en PDF</li></ul></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 COMPÉTENCES -->
+  <section class="section" id="competences">
+    <div class="container">
+      <h2 class="section__title reveal">Mes <span>compétences</span></h2>
+      <div class="skills">
+        <div class="skills__card reveal"><h3>Marque</h3><ul class="chips"><li>Identité visuelle</li><li>Logo</li><li>Charte graphique</li><li>Positionnement</li></ul></div>
+        <div class="skills__card reveal"><h3>Création</h3><ul class="chips"><li>Social media</li><li>Affiches</li><li>Typographie</li><li>Mise en page</li></ul></div>
+        <div class="skills__card reveal"><h3>Méthode</h3><ul class="chips"><li>Authenticité</li><li>Audace</li><li>Rigueur</li><li>Respect des délais</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TÉMOIGNAGES -->
+  <section class="section section--soft" id="temoignages">
+    <div class="container"><h2 class="section__title reveal">Ce qu’ils <span>disent</span></h2></div>
+    <!-- Remplacez ces textes par de vrais avis clients -->
+    <div class="marquee"><div class="marquee__row" id="marquee">
+      <blockquote><p>Excellent travail, je recommande vivement. Merci beaucoup !</p><footer>Mme Sidi Bera, cliente</footer></blockquote>
+      <blockquote><p>Tu es vraiment professionnel. Je te recommande vivement.</p><footer>M. Kouton Joe, client</footer></blockquote>
+      <blockquote><p>Toujours des travaux bien fait. Je te recommande vivement.</p><footer>Isaac TOTIN, client</footer></blockquote>
+    </div></div>
+  </section>
+
+  <!-- 07 CONTACT -->
+  <section class="section" id="contact">
+    <div class="container contact">
+      <div class="reveal">
+        <h2 class="section__title">Parlons de <span>votre projet</span></h2>
+        <p class="muted">Décrivez-le en quelques lignes. Je réponds sur WhatsApp à tout moment</p>
+        <ul class="contact__list">
+          <li><a href="https://wa.me/2290159020025" target="_blank" rel="noopener">WhatsApp : +229 01 59 02 00 25</a></li>
+          <li><a href="mailto:abrahamtotin51@gmail.com">abrahamtotin51@gmail.com</a></li><!-- à remplacer -->
+          <li><a href="https://www.linkedin.com/in/abraham-tottin-241816332" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+      <form class="form reveal" id="form">
+        <label for="nom">Votre nom</label><input id="nom" required autocomplete="name">
+        <label for="type">Type de projet</label>
+        <select id="type"><option>Identité visuelle / logo</option><option>Visuels réseaux sociaux</option><option>Publicité / communication</option><option>Autre</option></select>
+        <label for="message">Votre message</label><textarea id="message" rows="4" required></textarea>
+        <button class="btn" type="submit">Envoyer par WhatsApp</button>
+        <p class="form__note" id="form-note" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__title">Collaborons et donnons à votre marque l’image qu’elle mérite.</p>
+    <span>© <span id="year">2026</span>  Abraham TOTTIN</span>
+  </div>
+</footer>
+
+<a href="#accueil" class="up" id="up" aria-label="Retour en haut">↑</a>
+
+<!-- Visionneuse de projet -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal__box">
+    <button class="modal__close" id="m-close" aria-label="Fermer">×</button>
+    <h3 id="m-title"></h3><p class="muted" id="m-desc"></p>
+    <div class="modal__files" id="m-files"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
