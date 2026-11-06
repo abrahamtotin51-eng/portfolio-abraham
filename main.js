@@ -33,7 +33,7 @@ const bt = $('#badge-text');
 
 /* ---------- Texte qui s'écrit tout seul ---------- */
 (function typed() {
-  const words = ['directeur artistique', 'créateur de logos', 'designer social media'];
+  const words = ['créateur d’identités visuelles', 'designer social media','graphiste publicitaire'];
   const t = $('#typed'); let w = 0, c = 0, del = false;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) { t.textContent = words[0]; return; }
   (function tick() {
