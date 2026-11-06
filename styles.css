@@ -160,9 +160,3 @@ blockquote footer{margin-top:.9rem;font-weight:600;color:var(--muted);font-size:
   *,*::before,*::after{animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
 }
-/* Transition accueil -> à propos */
-.badge{display:none}
-.hero{border-radius:0 0 2.5rem 2.5rem}
-.hero__photo{-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
-.about{padding-top:6rem}
-@media (max-width:860px){.about{padding-top:5rem}}
