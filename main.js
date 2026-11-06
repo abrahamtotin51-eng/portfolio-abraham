@@ -139,3 +139,6 @@ if (configured) {
   loadProjects(sb);
   sb.channel('projets-live').on('postgres_changes', { event: '*', schema: 'public', table: 'projets' }, () => loadProjects(sb)).subscribe();
 } else { projects = DEMO; renderCards(); }
+/* ---------- Salutation selon l'heure ---------- */
+const greet = $('#greet');
+if (greet) greet.textContent = new Date().getHours() >= 13 ? 'Bonsoir' : 'Bonjour';
