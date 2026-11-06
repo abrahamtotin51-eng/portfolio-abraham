@@ -139,9 +139,3 @@ if (configured) {
   loadProjects(sb);
   sb.channel('projets-live').on('postgres_changes', { event: '*', schema: 'public', table: 'projets' }, () => loadProjects(sb)).subscribe();
 } else { projects = DEMO; renderCards(); }
-/* Transition accueil -> à propos */
-.badge{display:none}
-.hero{border-radius:0 0 2.5rem 2.5rem}
-.hero__photo{-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
-.about{padding-top:6rem}
-@media (max-width:860px){.about{padding-top:5rem}}
