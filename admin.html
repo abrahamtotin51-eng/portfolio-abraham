@@ -3,191 +3,225 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Admin | Authentik Design</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Abraham Tottin | Brand designer – Authentik Design</title>
+  <meta name="description" content="Brand designer au Bénin. J’aide les entrepreneurs, coachs et créateurs de contenu à avoir une image de marque crédible et rentable sur les réseaux sociaux.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://kjsbcpzdztzhlvgxutqb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<main class="admin">
-  <h1>Gérer mes projets</h1>
+<div class="progress" id="progress"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
 
-  <section class="box" id="login">
-    <form class="form" id="login-form">
-      <label for="email">E-mail</label><input id="email" type="email" required autocomplete="username">
-      <label for="pass">Mot de passe</label><input id="pass" type="password" required autocomplete="current-password">
-      <button class="btn" type="submit">Se connecter</button>
-      <p class="status" id="login-status" role="status"></p>
-    </form>
+<header class="header" id="header">
+  <nav class="nav container" aria-label="Navigation principale">
+    <a href="#accueil" class="logo">Abraham TOTTIN</a>
+    <button class="nav__toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">Menu</button>
+    <ul class="nav__list" id="nav-list">
+      <li><a href="#accueil" class="nav__link">Accueil</a></li>
+      <li><a href="#projets" class="nav__link">Projets</a></li>
+      <li><a href="#services" class="nav__link">Services</a></li>
+      <li><a href="#competences" class="nav__link">Compétences</a></li>
+      <li><a href="#tarifs" class="nav__link">Tarifs</a></li>
+      <li><a class="btn btn--small" href="#contact">Me contacter</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- 01 ACCUEIL -->
+  <section class="hero" id="accueil">
+    <div class="container hero__inner reveal">
+      <p class="hero__sub">Bonjour, je m'appelle Abraham TOTTIN</p>
+      <h1 class="hero__title">Une image de marque qui inspire confiance et qui fait vendre.</h1>
+      <p class="hero__text">J'aide les entrepreneurs, coachs et créateurs de contenu à passer d'une image approximative à une marque crédible et cohérente sur les réseaux sociaux.</p>
+      <div class="hero__cta">
+        <a class="btn" href="https://wa.me/2290159020025?text=Bonjour%20Abraham%2C%20je%20souhaite%20discuter%20de%20mon%20projet%20de%20marque." target="_blank" rel="noopener">Discuter de mon projet</a>
+        <a class="btn btn--ghost" href="#projets">Voir mes projets</a>
+      </div>
+      <a href="#projets" class="badge" aria-label="Voir les projets">
+        <span class="badge__text" id="badge-text" data-text="EXPLORER · PLUS · VOIR LES PROJETS · "></span>
+        <span class="badge__arrow">↓</span>
+      </a>
+      <!-- Votre photo : remplacez le bloc par <img class="hero__photo" src="abraham.png" alt="Abraham Tottin"> -->
+      <img class="hero__photo" src="ec756203-27c1-4a94-a775-ff213627becf.jpg" alt="Abraham Tottin">
+    </div>
   </section>
 
-  <div id="panel" hidden>
-    <section class="box" id="form-box">
-      <h2 id="form-title" style="font-size:1.4rem;margin-bottom:.5rem">Ajouter un projet</h2>
-      <form class="form" id="add-form">
-        <label for="nom">Nom du projet</label><input id="nom" required>
-        <label for="cat">Catégorie</label><select id="cat"></select>
-        <label for="desc">Description (facultatif)</label><textarea id="desc" rows="3"></textarea>
-        <div id="existing-box" hidden>
-          <label>Fichiers actuels (coche « Retirer » pour en supprimer)</label>
-          <ul class="list" id="existing"></ul>
-        </div>
-        <label for="files" id="files-label">Affiches, logos ou PDF (plusieurs possibles)</label>
-        <input id="files" type="file" accept="image/*,application/pdf" multiple required>
-        <button class="btn" type="submit" id="add-btn">Publier sur le portfolio</button>
-        <button class="btn btn--ghost" type="button" id="cancel" hidden>Annuler la modification</button>
-        <p class="status" id="add-status" role="status"></p>
+  <!-- 02 À PROPOS -->
+  <section class="section about" id="apropos">
+    <div class="container about__grid">
+      <h2 class="about__title reveal">Designer professionnel, je transforme des <span>idées floues</span> en <span>marques claires</span>, avec rigueur et audace.</h2>
+      <div class="reveal">
+        <p>Je vous aide à avoir une image de marque crédible et rentable sur les réseaux sociaux, avec des visuels professionnels et cohérents. Identité visuelle, affiches, stratégie de communication, badges, attestations, mise en page : je prends en charge tout ce qui donne à votre marque une allure pro.</p>
+        <a class="btn" href="#contact">Me contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PROJETS (chargés depuis la base de données) -->
+  <section class="section" id="projets">
+    <div class="container">
+      <h2 class="section__title reveal">Mes <span>projets</span></h2>
+      <div class="filters" id="filters" role="group" aria-label="Filtrer les projets"></div>
+      <div class="slider">
+        <button class="slider__btn" id="prev" aria-label="Projet précédent">‹</button>
+        <div class="track" id="track" tabindex="0" aria-live="polite"></div>
+        <button class="slider__btn" id="next" aria-label="Projet suivant">›</button>
+      </div>
+      <p class="empty" id="empty" hidden>Aucun projet dans cette catégorie pour le moment.</p>
+    </div>
+  </section>
+
+  <!-- 04 SERVICES -->
+  <section class="section section--soft" id="services">
+    <div class="container">
+      <h2 class="section__title reveal">Mes <span>services</span></h2>
+      <div class="acc reveal" id="acc">
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Identité visuelle</span><i>+</i></button>
+          <div class="acc__body"><p>Logo, couleurs, typographies et règles d’usage, pour n’importe quel projet ou campagne.</p><ul><li>Logo</li><li>Charte graphique</li><li>Déclinaisons sur vos supports</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Affiches publicitaires</span><i>+</i></button>
+          <div class="acc__body"><p>Des affiches claires, qui attirent l’œil et donnent envie d’agir.</p><ul><li>Affiches</li><li>Flyers</li><li>Bannières de campagne</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Stratégie de communication</span><i>+</i></button>
+          <div class="acc__body"><p>Je définis quoi dire, à qui et sur quels supports, pour que chaque visuel serve un objectif.</p><ul><li>Message et cible</li><li>Choix des supports</li><li>Cohérence sur les réseaux sociaux</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Badges et attestations</span><i>+</i></button>
+          <div class="acc__body"><p>Des badges et des attestations soignés, prêts à être imprimés ou partagés.</p><ul><li>Badges</li><li>Attestations</li></ul></div>
+        </article>
+        <article class="acc__item">
+          <button class="acc__head" aria-expanded="false"><span>Documents éditoriaux et mise en page</span><i>+</i></button>
+          <div class="acc__body"><p>Brochures, dossiers et documents mis en page de façon professionnelle, lisibles et cohérents avec votre marque.</p><ul><li>Mise en page professionnelle</li><li>Documents éditoriaux en PDF</li></ul></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 PROCESSUS -->
+  <section class="section" id="processus">
+    <div class="container">
+      <h2 class="section__title reveal">Comment <span>je travaille</span></h2>
+      <p class="muted section__lead reveal">Un déroulé simple, pour que vous sachiez toujours où en est votre projet.</p>
+      <ol class="steps">
+        <li class="steps__item reveal"><span class="steps__n">1</span><h3>Brief</h3><p>On échange sur WhatsApp ou par appel : votre activité, votre cible, le style que vous aimez.</p></li>
+        <li class="steps__item reveal"><span class="steps__n">2</span><h3>Proposition</h3><p>Vous recevez un devis clair avec les livrables, le délai et le prix. Le projet démarre après l’acompte de 50 %.</p></li>
+        <li class="steps__item reveal"><span class="steps__n">3</span><h3>Création</h3><p>Je vous présente mes propositions et vous donnez vos retours. Les révisions prévues dans la formule sont incluses.</p></li>
+        <li class="steps__item reveal"><span class="steps__n">4</span><h3>Livraison</h3><p>Vous recevez vos fichiers organisés, prêts pour le web et l’impression, avec les règles d’usage de votre marque.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 05a COMPÉTENCES ET OUTILS -->
+  <section class="section section--soft" id="competences">
+    <div class="container">
+      <h2 class="section__title reveal">Compétences <span>et outils</span></h2>
+      <p class="muted section__lead reveal">Une méthode de marque, des outils maîtrisés et l’IA pour avancer plus vite, sans perdre en qualité.</p>
+      <div class="expertise reveal">
+        <span class="expertise__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="#fff"/></svg></span>
+        <div><h3>Stratégie de communication de marque</h3><p>Définir le message, la cible et les supports pour que chaque visuel serve un objectif.</p></div>
+      </div>
+      <ul class="tools">
+        <li class="tool reveal"><span class="tool__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 250" aria-hidden="true" focusable="false"><rect width="256" height="249.6" fill="#001e36" rx="42.5"/><path fill="#31a8ff" d="M57.644 175.035V65.297q0-1.201 1.031-1.202l1.087-.003l1.858-.02l2.582-.051l8.65-.183l9.275-.172q4.893-.085 9.702-.086q13.05 0 21.982 3.263a38.1 38.1 0 0 1 14.34 8.758a33.6 33.6 0 0 1 7.814 12.108a40.2 40.2 0 0 1 2.405 13.824q0 13.741-6.355 22.669a35.9 35.9 0 0 1-16.6 12.756l-.573.21c-6.973 2.601-14.695 3.541-23.164 3.6l-1.316.004l-1.953-.01l-.985-.014l-1.098-.026l-.662-.026l-.402-.021l-.989-.036l-1.209-.025l-1.82-.013l-.405-.001v34.263a1.366 1.366 0 0 1-1.546 1.546H58.847q-1.204.001-1.203-1.374M80.84 84.703v35.792q2.23.173 4.12.172h5.668a40.3 40.3 0 0 0 11.533-1.727l.746-.233a18.5 18.5 0 0 0 8.759-5.668q3.228-3.807 3.344-10.492l.005-.499c.09-3.322-.774-6.6-2.491-9.445a16 16 0 0 0-7.47-6.097a31.8 31.8 0 0 0-12.537-2.146l-2.178.006l-1.374.012l-1.311.017l-1.85.036l-1.35.038l-.701.026l-.937.044l-.798.049l-.455.036l-.393.038l-.173.02zm123.93 29.284a40.2 40.2 0 0 0-9.458-3.442l-.76-.164a54.3 54.3 0 0 0-11.009-1.363l-.926-.011a22.2 22.2 0 0 0-6.44.773a5.8 5.8 0 0 0-3.35 2.146a5.4 5.4 0 0 0-.858 2.92a4.56 4.56 0 0 0 1.03 2.747a11.7 11.7 0 0 0 3.235 2.637l.372.197a72 72 0 0 0 7.556 3.52a75 75 0 0 1 16.4 7.814a24.94 24.94 0 0 1 8.416 8.845a23.6 23.6 0 0 1 2.49 10.99a24.7 24.7 0 0 1-4.122 14.169a27.1 27.1 0 0 1-11.936 9.53q-7.556 3.32-18.557 3.432l-.762.004a70 70 0 0 1-13.556-1.188l-.956-.186a46.3 46.3 0 0 1-10.905-3.435a2.22 2.22 0 0 1-1.202-1.89v-18.718a1.01 1.01 0 0 1 .43-.945a.83.83 0 0 1 .944.086a45.9 45.9 0 0 0 13.223 5.238a54.5 54.5 0 0 0 12.537 1.632q6.009 0 8.844-1.546a4.86 4.86 0 0 0 2.834-4.465q0-2.23-2.576-4.293q-1.08-.864-3.097-1.88l-.643-.316l-.686-.323l-.36-.164l-.754-.334l-.393-.17l-.82-.344l-.427-.175l-.886-.355l-.46-.18l-.953-.367l-.997-.373a63 63 0 0 1-15.199-7.728a26.2 26.2 0 0 1-8.071-9.016a23.7 23.7 0 0 1-2.49-10.905a24.6 24.6 0 0 1 3.606-12.88c2.7-4.27 6.576-7.67 11.163-9.788q7.555-3.776 18.89-3.779a83.6 83.6 0 0 1 13.224.945a34.7 34.7 0 0 1 9.206 2.49c.473.136.854.485 1.03.945c.117.419.174.852.172 1.288v17.345c.025.41-.172.803-.515 1.03a1.66 1.66 0 0 1-1.478 0"/></svg></span><h3>Photoshop</h3><p>Retouche, compositions et visuels publicitaires soignés.</p></li>
+        <li class="tool reveal"><span class="tool__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" aria-hidden="true" focusable="false"><g fill="#00c4cc"><path d="M59.39.152c-.484.051-1.995.23-3.328.387c-5.374.613-11.468 2.227-16.816 4.48C19.891 13.106 5.324 30.849 1.305 51.2C.359 56.04.129 58.418.129 64c0 7.195.715 12.16 2.61 18.434c6.195 20.53 22.323 36.632 42.906 42.851c6.195 1.871 11.187 2.586 18.355 2.586c7.195 0 12.16-.715 18.434-2.61c20.53-6.195 36.632-22.323 42.851-42.906c1.871-6.195 2.586-11.187 2.586-18.355c0-3.047-.152-6.527-.332-7.809c-2.074-14.796-8.168-27.238-18.328-37.402C99.07 8.703 86.68 2.586 72.19.512c-1.996-.282-11.238-.54-12.8-.36m-20.863 40.32c1.36.41 1.996.794 2.918 1.715c1.793 1.82 2.203 2.817 2.203 5.555c0 2.051-.078 2.434-.691 3.508c-1.18 1.996-3.918 3.84-5.812 3.89c-1.333.028-1.278-.562.18-2.097c1.945-2.023 2.226-2.79 2.226-5.813c-.024-2.917-.383-3.914-1.739-4.734c-1.128-.691-2.355-.64-4.148.203c-4.66 2.23-9.703 9.653-11.672 17.258c-2.613 10.137 2.02 18.25 9.649 16.867c2.226-.41 6.425-2.558 8.246-4.25c1.508-1.379 1.508-1.406 1.66-3.12c.336-3.587 2.867-7.169 6.25-8.833c1.558-.77 1.945-.844 4.043-.844c1.996 0 2.457.102 3.43.637c3.097 1.77 2.457 5.89-.895 5.89c-1.945 0-2.945-1-1.535-1.534c1.383-.512.867-2.434-.742-2.868c-1.895-.488-4.047.793-5.403 3.25c-1.64 2.97-1.715 6.504-.156 8.114c1.512 1.613 3.406.336 4.867-3.329c.766-1.867 1.867-2.867 3.149-2.867c1.125 0 1.332.692.843 2.793c-.718 3.25-.23 4.094 1.793 3.098c.664-.309 1.766-1.023 2.43-1.535l1.254-1l.848-4.43c.922-4.965 1.277-5.633 3.172-5.988c1.82-.336 2.23.562 1.562 3.402l-.36 1.59l1.333-1.36c3.148-3.226 7.015-4.812 8.347-3.48c.715.715.637 1.613-.386 4.785c-.485 1.512-1.153 3.895-1.457 5.25c-.461 2.047-.489 2.535-.23 2.868c.82.972 3.327-.028 5.554-2.204l1.305-1.277l.156-2.844c.152-3.277.457-4.453 1.328-5.504c.82-.972 2.305-1.687 3.098-1.484c.793.207.793.973.078 3.227c-1 3.097-.895 10.238.129 10.238c.41 0 2.507-2.2 3.84-4.043l.996-1.36l-.793-.816c-1.383-1.46-1.715-2.406-1.715-4.789c0-1.738.129-2.379.562-3.227c.719-1.328 1.844-2.3 3.176-2.687c1.406-.434 3.148.281 3.863 1.562c.719 1.305.54 4.223-.383 6.223l-.664 1.457h.895c1.23 0 1.715-.305 3.918-2.379c1.152-1.101 2.484-2.05 3.48-2.511c3.918-1.84 8.528-.895 9.293 1.921c.64 2.254-.765 3.84-3.226 3.66c-1.766-.128-2.098-.59-1.074-1.456c1.843-1.54 0-3.508-2.637-2.793c-1.434.386-3.047 1.996-3.89 3.867c-1.692 3.738-.794 8.14 1.636 8.14c.973 0 2.691-1.921 3.355-3.789c.793-2.152 2.457-3.507 3.711-3.02c.692.255.743.946.309 3.122c-.488 2.383-.563 4.61-.18 5.633c.153.382.614 1.101 1.051 1.586c.816.921.844 1.254.152 1.691c-.332.23-.77.129-1.843-.46c-1.485-.77-2.766-2.153-3.227-3.458l-.281-.766l-1.024.766c-.59.41-1.511.871-2.047 1.023c-2.125.563-4.738-.894-5.964-3.351c-.489-.95-.641-3.738-.282-4.813c.204-.59.204-.59-.617-.18c-.433.231-1.355.485-2.07.563c-1.18.13-1.36.258-2.535 1.742c-1.664 2.07-4.61 4.864-5.813 5.454c-2.558 1.277-3.402.918-4.07-1.72l-.461-1.765l-1.102.973c-1.406 1.23-4.222 2.715-5.836 3.074c-1.535.332-3.175-.156-3.84-1.18c-.995-1.535-.663-4.785.922-9.164c1.176-3.25.333-3.3-2.636-.203c-2.203 2.328-3.149 3.992-3.762 6.578c-.64 2.688-1.41 3.66-3.148 4.07c-1.051.231-1.54-.41-1.332-1.816l.152-1.129l-.973.668c-1.383.946-3.125 1.817-4.328 2.149s-2.789-.024-3.172-.692c-.691-1.175-.691-1.175-1.765-.332c-2.332 1.895-5.66 1.356-7.348-1.152l-.54-.793l-1.687 1.562c-4.867 4.454-10.957 6.45-15.464 5.067c-5.735-1.738-8.907-6.656-8.856-13.746c.024-7.117 3.172-14.617 8.473-20.172c2.996-3.125 5.812-4.969 8.68-5.66c2.07-.512 3.328-.485 5.296.129zm0 0"/><path d="M90.418 58.676c-.563.562-.356 2.816.36 4.25c.359.742.742 1.332.87 1.332c.102 0 .332-.59.512-1.309c.64-2.66-.512-5.504-1.742-4.273m0 0"/></g></svg></span><h3>Canva</h3><p>Modèles de visuels pour les réseaux sociaux, faciles à réutiliser.</p></li>
+        <li class="tool reveal"><span class="tool__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 260" aria-hidden="true" focusable="false"><path d="M239.184 106.203a64.72 64.72 0 0 0-5.576-53.103C219.452 28.459 191 15.784 163.213 21.74A65.586 65.586 0 0 0 52.096 45.22a64.72 64.72 0 0 0-43.23 31.36c-14.31 24.602-11.061 55.634 8.033 76.74a64.67 64.67 0 0 0 5.525 53.102c14.174 24.65 42.644 37.324 70.446 31.36a64.72 64.72 0 0 0 48.754 21.744c28.481.025 53.714-18.361 62.414-45.481a64.77 64.77 0 0 0 43.229-31.36c14.137-24.558 10.875-55.423-8.083-76.483m-97.56 136.338a48.4 48.4 0 0 1-31.105-11.255l1.535-.87l51.67-29.825a8.6 8.6 0 0 0 4.247-7.367v-72.85l21.845 12.636c.218.111.37.32.409.563v60.367c-.056 26.818-21.783 48.545-48.601 48.601M37.158 197.93a48.35 48.35 0 0 1-5.781-32.589l1.534.921l51.722 29.826a8.34 8.34 0 0 0 8.441 0l63.181-36.425v25.221a.87.87 0 0 1-.358.665l-52.335 30.184c-23.257 13.398-52.97 5.431-66.404-17.803M23.549 85.38a48.5 48.5 0 0 1 25.58-21.333v61.39a8.29 8.29 0 0 0 4.195 7.316l62.874 36.272l-21.845 12.636a.82.82 0 0 1-.767 0L41.353 151.53c-23.211-13.454-31.171-43.144-17.804-66.405zm179.466 41.695l-63.08-36.63L161.73 77.86a.82.82 0 0 1 .768 0l52.233 30.184a48.6 48.6 0 0 1-7.316 87.635v-61.391a8.54 8.54 0 0 0-4.4-7.213m21.742-32.69l-1.535-.922l-51.619-30.081a8.39 8.39 0 0 0-8.492 0L99.98 99.808V74.587a.72.72 0 0 1 .307-.665l52.233-30.133a48.652 48.652 0 0 1 72.236 50.391zM88.061 139.097l-21.845-12.585a.87.87 0 0 1-.41-.614V65.685a48.652 48.652 0 0 1 79.757-37.346l-1.535.87l-51.67 29.825a8.6 8.6 0 0 0-4.246 7.367zm11.868-25.58L128.067 97.3l28.188 16.218v32.434l-28.086 16.218l-28.188-16.218z"/></svg></span><h3>ChatGPT</h3><p>Recherche, idées de messages et rédaction pour gagner du temps.</p></li>
+        <li class="tool reveal"><span class="tool__logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z" fill="#3186FF"></path><path d="M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z" fill="url(#lobe-icons-gemini-0-_R_0_)"></path><path d="M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z" fill="url(#lobe-icons-gemini-1-_R_0_)"></path><path d="M20.616 10.835a14.147 14.147 0 01-4.45-3.001 14.111 14.111 0 01-3.678-6.452.503.503 0 00-.975 0 14.134 14.134 0 01-3.679 6.452 14.155 14.155 0 01-4.45 3.001c-.65.28-1.318.505-2.002.678a.502.502 0 000 .975c.684.172 1.35.397 2.002.677a14.147 14.147 0 014.45 3.001 14.112 14.112 0 013.679 6.453.502.502 0 00.975 0c.172-.685.397-1.351.677-2.003a14.145 14.145 0 013.001-4.45 14.113 14.113 0 016.453-3.678.503.503 0 000-.975 13.245 13.245 0 01-2.003-.678z" fill="url(#lobe-icons-gemini-2-_R_0_)"></path><defs><linearGradient gradientUnits="userSpaceOnUse" id="lobe-icons-gemini-0-_R_0_" x1="7" x2="11" y1="15.5" y2="12"><stop stop-color="#08B962"></stop><stop offset="1" stop-color="#08B962" stop-opacity="0"></stop></linearGradient><linearGradient gradientUnits="userSpaceOnUse" id="lobe-icons-gemini-1-_R_0_" x1="8" x2="11.5" y1="5.5" y2="11"><stop stop-color="#F94543"></stop><stop offset="1" stop-color="#F94543" stop-opacity="0"></stop></linearGradient><linearGradient gradientUnits="userSpaceOnUse" id="lobe-icons-gemini-2-_R_0_" x1="3.5" x2="17.5" y1="13.5" y2="12"><stop stop-color="#FABC12"></stop><stop offset=".46" stop-color="#FABC12" stop-opacity="0"></stop></linearGradient></defs></svg></span><h3>Gemini</h3><p>Exploration de pistes créatives et de références.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 05b FORMULES ET TARIFS -->
+  <section class="section section--dark" id="tarifs">
+    <div class="container">
+      <h2 class="section__title reveal">Formules <span>et tarifs</span></h2>
+      <p class="section__lead reveal">Prix en FCFA. Après notre premier échange, vous recevez un devis précis pour votre projet.</p>
+      <div class="plans">
+        <article class="plan reveal">
+          <h3>Essentiel</h3>
+          <p class="plan__for">Pour démarrer avec un logo professionnel.</p>
+          <p class="plan__price"><small>à partir de</small>30 000 FCFA</p>
+          <ul><li>Logo (2 pistes proposées)</li><li>Palette de couleurs et typographies</li><li>Fichiers pour le web et l’impression</li><li>2 révisions</li></ul>
+          <a class="btn" href="https://wa.me/2290159020025?text=Bonjour%20Abraham%2C%20la%20formule%20Essentiel%20m%27int%C3%A9resse." target="_blank" rel="noopener">Discuter de cette formule</a>
+        </article>
+        <article class="plan plan--main reveal">
+          <h3>Identité complète</h3>
+          <p class="plan__for">Recommandé : une marque cohérente sur tous vos supports et réseaux sociaux.</p>
+          <p class="plan__price"><small>à partir de</small>90 000 FCFA</p>
+          <ul><li>Logo et charte graphique</li><li>5 modèles de visuels pour les réseaux sociaux</li><li>Déclinaisons (carte, en-tête, affiche)</li><li>3 révisions</li></ul>
+          <a class="btn" href="https://wa.me/2290159020025?text=Bonjour%20Abraham%2C%20la%20formule%20Identit%C3%A9%20compl%C3%A8te%20m%27int%C3%A9resse." target="_blank" rel="noopener">Discuter de cette formule</a>
+        </article>
+        <article class="plan reveal">
+          <h3>Marque et contenu</h3>
+          <p class="plan__for">Pour une image de marque pensée et suivie dans la durée.</p>
+          <p class="plan__price"><small>à partir de</small>180 000 FCFA</p>
+          <ul><li>Identité complète</li><li>Direction artistique</li><li>Stratégie de communication</li><li>10 visuels pour les réseaux sociaux</li></ul>
+          <a class="btn" href="https://wa.me/2290159020025?text=Bonjour%20Abraham%2C%20la%20formule%20Marque%20et%20contenu%20m%27int%C3%A9resse." target="_blank" rel="noopener">Discuter de cette formule</a>
+        </article>
+      </div>
+      <p class="plans__note reveal">Besoin d’une affiche, d’un flyer ou d’un document ? Demandez un devis à l’unité sur WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- 06 TÉMOIGNAGES -->
+  <section class="section section--soft" id="temoignages">
+    <div class="container"><h2 class="section__title reveal">Ce qu’ils <span>disent</span></h2></div>
+    <!-- Remplacez ces textes par de vrais avis clients -->
+    <div class="marquee"><div class="marquee__row" id="marquee">
+      <blockquote><p>Excellent travail, je recommande vivement. Merci beaucoup !</p><footer>Mme Sidi Bera, cliente</footer></blockquote>
+      <blockquote><p>Tu es vraiment professionnel. Je te recommande vivement.</p><footer>M. Kouton Joe, client</footer></blockquote>
+      <blockquote><p>Toujours des travaux bien fait. Je te recommande vivement.</p><footer>Isaac TOTIN, client</footer></blockquote>
+    </div></div>
+  </section>
+
+  <!-- 07 CONTACT -->
+  <section class="section" id="contact">
+    <div class="container contact">
+      <div class="reveal">
+        <h2 class="section__title">Parlons de <span>votre projet</span></h2>
+        <p class="muted">Décrivez-le en quelques lignes. Je réponds sur WhatsApp à tout moment</p>
+        <ul class="contact__list">
+          <li><a href="https://wa.me/2290159020025" target="_blank" rel="noopener">WhatsApp : +229 01 59 02 00 25</a></li>
+          <li><a href="mailto:abrahamtotin51@gmail.com">abrahamtotin51@gmail.com</a></li><!-- à remplacer -->
+          <li><a href="https://www.linkedin.com/in/abraham-tottin-241816332" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+      <form class="form reveal" id="form">
+        <label for="nom">Votre nom</label><input id="nom" required autocomplete="name">
+        <label for="type">Type de projet</label>
+        <select id="type"><option>Identité visuelle / logo</option><option>Visuels réseaux sociaux</option><option>Publicité / communication</option><option>Autre</option></select>
+        <label for="message">Votre message</label><textarea id="message" rows="4" required></textarea>
+        <button class="btn" type="submit">Envoyer par WhatsApp</button>
+        <p class="form__note" id="form-note" role="status"></p>
       </form>
-    </section>
-    <section>
-      <h2 style="font-size:1.4rem">Projets publiés</h2>
-      <ul class="list" id="list"></ul>
-      <p style="margin-top:1.5rem"><a href="index.html">Voir le portfolio</a> · <button class="btn btn--ghost btn--small" id="logout">Se déconnecter</button></p>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__title">Collaborons et donnons à votre marque l’image qu’elle mérite.</p>
+    <span>© <span id="year">2026</span>  Abraham TOTTIN</span>
+  </div>
+</footer>
+
+<a href="#accueil" class="up" id="up" aria-label="Retour en haut">↑</a>
+
+<!-- Visionneuse de projet -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal__box">
+    <button class="modal__close" id="m-close" aria-label="Fermer">×</button>
+    <h3 id="m-title"></h3><p class="muted" id="m-desc"></p>
+    <div class="modal__files" id="m-files"></div>
+  </div>
+</div>
+
 <script src="config.js"></script>
-<script>
-const CATEGORIES = ['Branding', 'Social Media Design', 'Publicité & Communication', 'Logofolio', 'Projets conceptuels'];
-const BUCKET = 'projets', MAX_SIDE = 2000;
-const $ = s => document.querySelector(s);
-const say = (id, msg, err) => { const n = $(id); n.textContent = msg; n.classList.toggle('err', !!err); };
-CATEGORIES.forEach(c => $('#cat').add(new Option(c, c)));
-let editing = null;
-
-if (!window.SUPABASE_URL || window.SUPABASE_URL.includes('VOTRE')) {
-  say('#login-status', 'Complétez d’abord config.js avec vos identifiants Supabase.', true);
-  $('#login-form').querySelector('button').disabled = true;
-}
-const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-
-async function show() {
-  const { data: { session } } = await sb.auth.getSession();
-  $('#login').hidden = !!session; $('#panel').hidden = !session;
-  if (session) refresh();
-}
-$('#login-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const { error } = await sb.auth.signInWithPassword({ email: $('#email').value, password: $('#pass').value });
-  if (error) say('#login-status', 'Connexion refusée : vérifiez l’e-mail et le mot de passe.', true); else show();
-});
-$('#logout').addEventListener('click', async () => { await sb.auth.signOut(); show(); });
-
-/* Réduit les grandes images avant l'envoi (envoi bien plus rapide, qualité conservée) */
-async function shrink(f) {
-  if (!f.type.startsWith('image/') || /svg|gif/.test(f.type)) return f;
-  try {
-    const bmp = await createImageBitmap(f);
-    const r = Math.min(1, MAX_SIDE / Math.max(bmp.width, bmp.height));
-    if (r === 1 && f.size < 600000) { bmp.close(); return f; }
-    const c = document.createElement('canvas');
-    c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); bmp.close();
-    const type = f.type === 'image/png' ? 'image/png' : 'image/jpeg';
-    const blob = await new Promise(res => c.toBlob(res, type, .88));
-    return blob && blob.size < f.size ? new File([blob], f.name, { type }) : f;
-  } catch { return f; }
-}
-
-/* Crée une petite miniature WebP (600 px) pour l'affichage rapide de la liste des projets */
-async function thumb(f) {
-  if (!f.type.startsWith('image/') || /svg|gif/.test(f.type)) return null;
-  try {
-    const bmp = await createImageBitmap(f);
-    const r = Math.min(1, 600 / Math.max(bmp.width, bmp.height));
-    const c = document.createElement('canvas');
-    c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
-    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height); bmp.close();
-    const b = await new Promise(res => c.toBlob(res, 'image/webp', .75));
-    return b && b.type === 'image/webp' ? b : null;
-  } catch { return null; }
-}
-
-function resetForm() {
-  editing = null; $('#add-form').reset();
-  $('#form-title').textContent = 'Ajouter un projet'; $('#add-btn').textContent = 'Publier sur le portfolio';
-  $('#files').required = true; $('#existing-box').hidden = true; $('#cancel').hidden = true;
-  $('#files-label').textContent = 'Affiches, logos ou PDF (plusieurs possibles)'; say('#add-status', '');
-}
-$('#cancel').addEventListener('click', resetForm);
-
-function startEdit(p) {
-  editing = p;
-  $('#nom').value = p.nom; $('#cat').value = p.categorie; $('#desc').value = p.description || '';
-  $('#form-title').textContent = 'Modifier le projet'; $('#add-btn').textContent = 'Enregistrer les modifications';
-  $('#files').required = false; $('#cancel').hidden = false; $('#existing-box').hidden = false;
-  $('#files-label').textContent = 'Ajouter d’autres fichiers (facultatif)';
-  const ul = $('#existing'); ul.innerHTML = '';
-  (p.fichiers || []).forEach((f, i) => {
-    const li = document.createElement('li');
-    const t = document.createElement('span'); t.textContent = f.name || ('Fichier ' + (i + 1));
-    const l = document.createElement('label'); const cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.dataset.i = i; l.append(cb, ' Retirer'); li.append(t, l); ul.appendChild(li);
-  });
-  $('#form-box').scrollIntoView({ behavior: 'smooth' });
-}
-
-async function refresh() {
-  const { data } = await sb.from('projets').select('*').order('created_at', { ascending: false });
-  const ul = $('#list'); ul.innerHTML = '';
-  (data || []).forEach(p => {
-    const li = document.createElement('li');
-    const t = document.createElement('span'); t.textContent = `${p.nom} (${p.categorie}, ${(p.fichiers || []).length} fichier(s))`;
-    const box = document.createElement('span');
-    const e = document.createElement('button'); e.className = 'btn btn--ghost btn--small'; e.textContent = 'Modifier'; e.type = 'button';
-    e.addEventListener('click', () => startEdit(p));
-    const b = document.createElement('button'); b.className = 'btn btn--danger'; b.textContent = 'Supprimer'; b.type = 'button';
-    b.addEventListener('click', async () => {
-      if (!confirm(`Supprimer « ${p.nom} » ?`)) return;
-      const paths = (p.fichiers || []).flatMap(f => [f.path, f.thumbPath]).filter(Boolean);
-      if (paths.length) await sb.storage.from(BUCKET).remove(paths);
-      await sb.from('projets').delete().eq('id', p.id);
-      if (editing && editing.id === p.id) resetForm(); refresh();
-    });
-    box.style.cssText = 'display:flex;gap:.5rem;flex:none'; box.append(e, b); li.append(t, box); ul.appendChild(li);
-  });
-  if (!data || !data.length) ul.innerHTML = '<li>Aucun projet pour l’instant.</li>';
-}
-
-$('#add-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const btn = $('#add-btn'); btn.disabled = true;
-  try {
-    const files = [...$('#files').files];
-    const removed = editing ? [...document.querySelectorAll('#existing input:checked')].map(c => +c.dataset.i) : [];
-    const kept = editing ? (editing.fichiers || []).filter((_, i) => !removed.includes(i)) : [];
-    if (!kept.length && !files.length) throw new Error('ajoutez au moins un fichier');
-    const folder = crypto.randomUUID(); let done = 0;
-    say('#add-status', `Envoi des fichiers (0/${files.length})…`);
-    const added = await Promise.all(files.map(async (orig, k) => {
-      const f = await shrink(orig);
-      const path = `${folder}/${k}_${f.name.normalize('NFD').replace(/[^\w.\-]+/g, '_')}`;
-      const { error } = await sb.storage.from(BUCKET).upload(path, f, { contentType: f.type, cacheControl: '31536000' });
-      if (error) throw error;
-      const rec = { url: sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl, type: f.type.startsWith('image/') ? 'image' : 'pdf', name: orig.name, path };
-      if (rec.type === 'image') {
-        const t = await thumb(f);
-        if (t) {
-          const tp = `${folder}/t${k}.webp`;
-          const r = await sb.storage.from(BUCKET).upload(tp, t, { contentType: 'image/webp', cacheControl: '31536000' });
-          if (!r.error) { rec.thumb = sb.storage.from(BUCKET).getPublicUrl(tp).data.publicUrl; rec.thumbPath = tp; }
-        }
-      }
-      say('#add-status', `Envoi des fichiers (${++done}/${files.length})…`);
-      return rec;
-    }));
-    const row = { nom: $('#nom').value.trim(), categorie: $('#cat').value, description: $('#desc').value.trim(), fichiers: [...kept, ...added] };
-    const { error } = editing ? await sb.from('projets').update(row).eq('id', editing.id) : await sb.from('projets').insert(row);
-    if (error) throw error;
-    if (editing) { const gone = (editing.fichiers || []).filter((_, i) => removed.includes(i)).flatMap(f => [f.path, f.thumbPath]).filter(Boolean); if (gone.length) await sb.storage.from(BUCKET).remove(gone); }
-    const msg = editing ? 'Modifications enregistrées.' : 'Projet publié : il est déjà visible sur le portfolio.';
-    resetForm(); say('#add-status', msg); refresh();
-  } catch (err) { say('#add-status', 'Échec : ' + (err.message || 'erreur inconnue'), true); }
-  btn.disabled = false;
-});
-show();
-</script>
+<script src="main.js"></script>
 </body>
 </html>
