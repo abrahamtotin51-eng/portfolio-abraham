@@ -169,3 +169,44 @@ blockquote footer{margin-top:.9rem;font-weight:600;color:var(--muted);font-size:
 .hero__photo{-webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
 .about{padding-top:6rem}
 @media (max-width:860px){.about{padding-top:5rem}}
+
+/* processus */
+.section__lead{max-width:56ch;margin:-.5rem 0 2rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:2rem}
+.steps__item{border-top:3px solid var(--blue);padding-top:1.2rem}
+.steps__n{display:block;font:800 2.4rem var(--display);color:var(--blue);line-height:1;margin-bottom:.6rem}
+.steps__item h3{font-size:1.3rem;margin-bottom:.4rem}
+.steps__item p{color:var(--muted)}
+
+/* formules et tarifs */
+.section--dark{background:var(--black);color:#fff}
+.section--dark .section__lead{color:#c9cfdf}
+.section--dark .section__title span{color:#6C8BFF}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+.plan{display:flex;flex-direction:column;gap:.9rem;padding:1.8rem;border:1px solid #3a3d46;border-radius:1.4rem}
+.plan--main{background:var(--blue);border-color:var(--blue)}
+.plan h3{font-size:1.5rem}
+.plan__for{color:#c9cfdf}
+.plan--main .plan__for{color:#e6ebff}
+.plan__price{font:800 1.8rem var(--display)}
+.plan__price small{display:block;font:500 .9rem var(--body);color:#9aa1b3}
+.plan--main .plan__price small{color:#dbe3ff}
+.plan ul{list-style:disc;padding-left:1.2rem;display:grid;gap:.3rem;flex:1}
+.plan .btn{align-self:flex-start}
+.plan--main .btn{background:#fff;color:var(--blue);border-color:#fff}
+.plan--main .btn:hover{background:#000;color:#fff;border-color:#000}
+.plans__note{margin-top:1.5rem;color:#9aa1b3;max-width:60ch}
+
+/* compétences et outils */
+.skillsx{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:4rem;align-items:start}
+.skillsx__intro p{color:var(--muted);max-width:34ch}
+.skillsx__group+.skillsx__group{margin-top:2.5rem}
+.skillsx__group h3{font:600 1.05rem var(--body);letter-spacing:0;color:var(--muted);margin-bottom:.6rem}
+.skill{display:flex;align-items:center;gap:1.2rem;padding:1.2rem 0;border-top:1px solid var(--line)}
+.skill:last-child{border-bottom:1px solid var(--line)}
+.skill__badge{flex:none;display:grid;place-items:center;width:3.4rem;height:3.4rem;border-radius:.9rem;background:var(--black);color:#fff;font:700 1.05rem var(--display)}
+.skill__badge--blue{background:var(--blue)}
+.skill__badge--sm{font-size:.8rem}
+.skill h4{font:600 1.15rem var(--display);letter-spacing:-.01em}
+.skill p{color:var(--muted);font-size:.98rem}
+@media (max-width:860px){.skillsx{grid-template-columns:1fr;gap:2rem}}
