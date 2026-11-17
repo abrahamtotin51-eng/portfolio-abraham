@@ -31,21 +31,6 @@ const bt = $('#badge-text');
   const s = el('span', '', ch); s.style.transform = `translateX(-50%) rotate(${i * 360 / a.length}deg)`; bt.appendChild(s);
 });
 
-/* ---------- Texte qui s'écrit tout seul ---------- */
-(function typed() {
-  const words = ['créateur d’identités visuelles', 'designer social media','graphiste publicitaire'];
-  const t = $('#typed'); let w = 0, c = 0, del = false;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { t.textContent = words[0]; return; }
-  (function tick() {
-    const word = words[w];
-    t.textContent = word.slice(0, c);
-    if (!del && c === word.length) { del = true; return setTimeout(tick, 1400); }
-    if (del && c === 0) { del = false; w = (w + 1) % words.length; }
-    c += del ? -1 : 1;
-    setTimeout(tick, del ? 40 : 90);
-  })();
-})();
-
 /* ---------- Apparition au scroll ---------- */
 const rv = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }), { threshold: .12 });
 document.querySelectorAll('.reveal').forEach(e => rv.observe(e));
@@ -102,22 +87,47 @@ function renderCards() {
     const card = el('button', 'card'); card.type = 'button';
     const img = (p.fichiers || []).find(f => f.type === 'image');
     let thumb;
-    if (img) { thumb = el('img', 'card__thumb'); thumb.src = img.url; thumb.alt = p.nom; thumb.loading = 'lazy'; }
+    if (img) { thumb = el('img', 'card__thumb'); thumb.src = img.thumb || img.url; thumb.alt = p.nom; thumb.width = 600; thumb.height = 450; thumb.decoding = 'async'; thumb.loading = i < 3 ? 'eager' : 'lazy'; }
     else thumb = el('div', 'card__thumb', (p.fichiers || []).length ? 'PDF' : p.categorie);
     card.append(thumb, el('span', 'card__n', String(i + 1).padStart(2, '0')), el('span', 'card__t', p.nom), el('span', 'card__c', p.categorie));
     card.addEventListener('click', () => openModal(p));
     track.appendChild(card);
   });
 }
+
+/* PDF : on dessine chaque page (marche aussi sur téléphone, sans téléchargement) */
+let pdfjsReady;
+function loadPdfJs() {
+  return pdfjsReady ||= new Promise((ok, ko) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; ok(); };
+    s.onerror = ko; document.head.appendChild(s);
+  });
+}
+async function showPdf(f, box) {
+  const note = el('p', 'muted', 'Chargement du PDF…'); box.appendChild(note);
+  try {
+    await loadPdfJs();
+    const pdf = await pdfjsLib.getDocument(f.url).promise;
+    for (let n = 1; n <= Math.min(pdf.numPages, 15); n++) {
+      const page = await pdf.getPage(n);
+      const w = Math.min(box.clientWidth || 800, 900);
+      const vp = page.getViewport({ scale: (w / page.getViewport({ scale: 1 }).width) * 1.5 });
+      const c = el('canvas', 'pdfpage'); c.width = vp.width; c.height = vp.height;
+      box.insertBefore(c, note);
+      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    }
+    note.remove();
+  } catch { note.textContent = 'Aperçu indisponible. Utilisez le lien ci-dessous.'; }
+}
+
 function openModal(p) {
   $('#m-title').textContent = p.nom; $('#m-desc').textContent = p.description || '';
   const box = $('#m-files'); box.innerHTML = '';
   (p.fichiers || []).forEach(f => {
     if (f.type === 'image') { const i = el('img'); i.src = f.url; i.alt = p.nom; box.appendChild(i); }
-    else {
-      const fr = el('iframe'); fr.src = f.url; fr.title = f.name || p.nom; box.appendChild(fr);
-      const a = el('a', 'modal__link', 'Ouvrir le PDF en plein écran'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; box.appendChild(a);
-    }
+    else { showPdf(f, box); const a = el('a', 'modal__link', 'Ouvrir le PDF en plein écran'); a.href = f.url; a.target = '_blank'; a.rel = 'noopener'; box.appendChild(a); }
   });
   $('#modal').hidden = false; $('#m-close').focus();
 }
@@ -129,16 +139,23 @@ const step = d => $('#track').scrollBy({ left: d * 320, behavior: 'smooth' });
 $('#prev').addEventListener('click', () => step(-1));
 $('#next').addEventListener('click', () => step(1));
 
-async function loadProjects(sb) {
-  const { data, error } = await sb.from('projets').select('*').order('created_at', { ascending: false });
-  projects = error ? [] : data; renderCards();
+const API = `${window.SUPABASE_URL}/rest/v1/projets?select=id,nom,categorie,description,fichiers&order=created_at.desc`;
+function skeleton() {
+  const t = $('#track'); t.innerHTML = '';
+  for (let i = 0; i < 3; i++) t.appendChild(el('div', 'card card--sk'));
+}
+async function loadProjects() {
+  try { const c = JSON.parse(localStorage.getItem('projets-v1') || 'null'); if (c) { projects = c; renderCards(); } else skeleton(); }
+  catch { skeleton(); }
+  try {
+    const r = await fetch(API, { headers: { apikey: window.SUPABASE_KEY } });
+    if (!r.ok) throw new Error(r.status);
+    projects = await r.json(); renderCards();
+    try { localStorage.setItem('projets-v1', JSON.stringify(projects)); } catch {}
+  } catch { if (!projects.length) renderCards(); }
 }
 renderFilters();
-if (configured) {
-  const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-  loadProjects(sb);
-  sb.channel('projets-live').on('postgres_changes', { event: '*', schema: 'public', table: 'projets' }, () => loadProjects(sb)).subscribe();
-} else { projects = DEMO; renderCards(); }
+if (configured) loadProjects(); else { projects = DEMO; renderCards(); }
 /* ---------- Salutation selon l'heure ---------- */
 const greet = $('#greet');
 if (greet) greet.textContent = new Date().getHours() >= 13 ? 'Bonsoir' : 'Bonjour';
