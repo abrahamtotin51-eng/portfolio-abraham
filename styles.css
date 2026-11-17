@@ -210,3 +210,7 @@ blockquote footer{margin-top:.9rem;font-weight:600;color:var(--muted);font-size:
 .skill h4{font:600 1.15rem var(--display);letter-spacing:-.01em}
 .skill p{color:var(--muted);font-size:.98rem}
 @media (max-width:860px){.skillsx{grid-template-columns:1fr;gap:2rem}}
+@media (max-width:860px){
+  .hero__cta{flex-direction:column;align-items:stretch;width:min(320px,100%)}
+  .hero__cta .btn{text-align:center}
+}
